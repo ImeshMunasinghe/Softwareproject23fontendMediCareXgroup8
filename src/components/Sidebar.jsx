@@ -15,6 +15,7 @@ import {
   MdChevronRight,
   MdAssignmentInd,
   MdSearch,
+  MdChat,
 } from "react-icons/md";
 
 export default function Sidebar() {
@@ -33,6 +34,7 @@ export default function Sidebar() {
     { id: 9, icon: <MdPayment size={22} />, text: "Admin Payments", path: "/admin/adminPayments" },
     { id: 10, icon: <MdAssignmentInd size={22} />, text: "Account Requests", path: "/admin/account-requests" },
     { id: 11, icon: <MdSearch size={22} />, text: "Search Analytics", path: "/admin/search-analytics" },
+    { id: 12, icon: <MdChat size={22} />, text: "Health Assistant", path: "/admin/health-assistant" },
   ];
 
   const handleLogout = () => {

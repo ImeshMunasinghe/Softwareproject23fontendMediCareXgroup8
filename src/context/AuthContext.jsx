@@ -12,6 +12,7 @@ import {
   collection,
   getDocs,
   addDoc,
+  setDoc,
   Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../services/firebase";
@@ -52,10 +53,10 @@ export function AuthProvider({ children }) {
 
   // Register new user
   const register = async (userData) => {
-    const { role } = userData;
+    const { role: _role } = userData;
 
     try {
-      if (role === "customer") {
+      if (_role === "customer") {
         // ── Customer: create account immediately ──
         const { fullName, email, password, phone } = userData;
         const userCredential = await createUserWithEmailAndPassword(
@@ -78,12 +79,12 @@ export function AuthProvider({ children }) {
           updatedAt: Timestamp.now(),
         };
 
-       
+       await setDoc(doc(db, "users", user.uid), savedUserData);
         return {
           success: true,
           user: { uid: user.uid, email, role: "customer", ...savedUserData },
         };
-      } else if (role === "supplier") {
+      } else if (_role === "supplier") {
         // ── Supplier: save as pending request (NO Firebase Auth yet) ──
         const {
           companyName,
@@ -129,7 +130,7 @@ export function AuthProvider({ children }) {
 
         return { success: true, pending: true };
 
-      } else if (role === "pharmacist") {
+      } else if (_role === "pharmacist") {
         //Pharmacist: save as pending request
         const {
           fullName,
@@ -201,7 +202,7 @@ export function AuthProvider({ children }) {
         admin: "admins",
       };
 
-      for (const [role, collectionName] of Object.entries(roleCollections)) {
+      for (const [, collectionName] of Object.entries(roleCollections)) {
         const userDoc = await getDoc(doc(db, collectionName, user.uid));
         if (userDoc.exists()) {
           userData = userDoc.data();
@@ -225,8 +226,6 @@ export function AuthProvider({ children }) {
           "Your account is suspended. Please contact the administrator.",
         );
       }
-      // Update last login time
-      const collectionName = roleCollections[actualRole];
 
       sessionStorage.setItem("userId", user.uid);
       sessionStorage.setItem("userRole", actualRole);
@@ -295,10 +294,10 @@ export function AuthProvider({ children }) {
 
     try {
       // Try to get from appropriate collection based on role
-      const role = sessionStorage.getItem("userRole");
+      const _role = sessionStorage.getItem("userRole");
       let collectionName;
 
-      switch (role) {
+      switch (_role) {
         case "supplier":
           collectionName = "suppliers";
           break;

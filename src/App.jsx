@@ -34,6 +34,7 @@ import OrderManagement from "./pages/admin/OrderManagement";
 import AdminPayments from "./pages/admin/AdminPayments";
 import AccountRequests from "./pages/admin/AccountRequests";
 import SearchAnalytics from './pages/admin/SearchAnalytics';
+import HealthAssistant from './pages/admin/HealthAssistant';
 
 export default function App() {
   return (
@@ -88,6 +89,7 @@ export default function App() {
           <Route path="adminPayments" element={<AdminPayments />} />
           <Route path="account-requests" element={<AccountRequests />} />
           <Route path="search-analytics" element={<SearchAnalytics />} />
+          <Route path="health-assistant" element={<HealthAssistant />} />
         </Route>
 
         {/* ========== 404 - NOT FOUND ========== */}
