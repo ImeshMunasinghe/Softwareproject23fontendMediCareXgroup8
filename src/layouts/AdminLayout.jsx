@@ -1,6 +1,7 @@
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
+import FloatingChat from "../components/FloatingChat";
 
 export default function AdminLayout() {
   return (
@@ -12,6 +13,7 @@ export default function AdminLayout() {
         <main style={{ padding: "20px"  }}>
           <Outlet />
         </main>
+        <FloatingChat />
       </div>
     </div>
   );

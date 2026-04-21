@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import API_BASE_URL from "../config/api";
 import { auth } from "../services/firebase";
 
-export default function ChatBot() {
+export default function ChatBot({ onClose }) {
   const [messages, setMessages] = useState([
     {
       role: "bot",
@@ -89,9 +89,32 @@ export default function ChatBot() {
           <p className="text-white font-semibold text-sm">Health Assistant</p>
           <p className="text-blue-200 text-xs">WHO Guidelines Only</p>
         </div>
-        <div className="ml-auto flex items-center gap-1">
-          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-          <span className="text-blue-200 text-xs">Online</span>
+        <div className="ml-auto flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+            <span className="text-blue-200 text-xs">Online</span>
+          </div>
+          {/* Close button */}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="text-white hover:text-blue-200 ml-2 bg-transparent border-none cursor-pointer"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
@@ -123,7 +146,8 @@ export default function ChatBot() {
                 <>
                   <span>{msg.text.replace(/⚕️.*$/, "")}</span>
                   <p className="mt-2 text-[10px] italic text-slate-400 border-t border-slate-100 pt-1">
-                    ⚕️ This is general health information only. It is not a substitute for professional medical advice.
+                    ⚕️ This is general health information only. It is not a
+                    substitute for professional medical advice.
                   </p>
                 </>
               ) : (
@@ -165,29 +189,6 @@ export default function ChatBot() {
         )}
         <div ref={bottomRef} />
       </div>
-
-      {/* Suggested questions - only on first load */}
-      {messages.length === 1 && (
-        <div className="px-4 py-2 bg-white border-t border-slate-100">
-          <p className="text-xs text-slate-400 mb-2">Try asking:</p>
-          <div className="flex flex-wrap gap-2">
-            {[
-              "I have a fever",
-              "What helps with a cold?",
-              "My child has diarrhea",
-            ].map((s) => (
-              <button
-                key={s}
-                onClick={() => setInput(s)}
-                className="px-3 py-1 bg-blue-50 text-[#0b5ed7] text-xs rounded-full
-                           border border-blue-200 hover:bg-blue-100 transition-all"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Input */}
       <div className="p-3 bg-white border-t border-slate-100">
